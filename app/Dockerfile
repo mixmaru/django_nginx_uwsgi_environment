@@ -1,8 +1,21 @@
-FROM python:3.6.6
+FROM ubuntu:18.04
 
-RUN pip install pipenv
-WORKDIR /app
+# 最新状態へ
+RUN apt update
+RUN apt -y upgrade
+
+# nginxのインストール
+RUN apt -y install nginx=1.14.0-0ubuntu1.1
+
 EXPOSE 80
+
+# nginxの起動(フォアグラウンドで動かさないとすぐ終了してしまう)
+CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
+
+
+# RUN pip install pipenv
+# WORKDIR /app
+# EXPOSE 80
 # WORKDIR /docker_build
 # ADD ./Pipfile /docker_build (必要なファイルをhostからコピー配置)
 # ADD ./Pipfile.lock /docker_build (同上)
