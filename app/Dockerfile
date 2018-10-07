@@ -1,11 +1,27 @@
 FROM ubuntu:18.04
 
+WORKDIR /root
+
 # 最新状態へ
 RUN apt update
 RUN apt -y upgrade
 
+# 必要なコマンドのインストール
+RUN apt -y install build-essential curl git zlib1g-dev libssl-dev libbz2-dev libreadline-dev libsqlite3-dev
+
 # nginxのインストール
 RUN apt -y install nginx=1.14.0-0ubuntu1.1
+
+# python3のインストール
+RUN curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+RUN echo 'export PATH="~/.pyenv/bin:$PATH"' >> /root/.bashrc && echo 'eval "$(pyenv init -)"' >> /root/.bashrc && echo 'eval "$(pyenv virtualenv-init -)"' >> /root/.bashrc
+RUN pyenv update && pyenv install 3.6.6 && pyenv global 3.6.6
+
+# pipのアップグレード
+RUN pip install --upgrade pip
+
+# uWSGIのインストール
+RUN pip install uwsgi
 
 EXPOSE 80
 
