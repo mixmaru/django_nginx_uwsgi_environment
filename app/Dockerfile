@@ -12,9 +12,20 @@ RUN apt -y install build-essential curl git zlib1g-dev libssl-dev libbz2-dev lib
 # nginxのインストール
 RUN apt -y install nginx=1.14.0-0ubuntu1.1
 
-# python3のインストール
+# pyenvのインストールと設定
 RUN curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
-RUN echo 'export PATH="~/.pyenv/bin:$PATH"' >> /root/.bashrc && echo 'eval "$(pyenv init -)"' >> /root/.bashrc && echo 'eval "$(pyenv virtualenv-init -)"' >> /root/.bashrc
+RUN echo 'export PATH="~/.pyenv/bin:$PATH"' >> /root/.bashrc && \
+    echo 'eval "$(pyenv init -)"' >> /root/.bashrc && \
+    echo 'eval "$(pyenv virtualenv-init -)"' >> /root/.bashrc
+
+ENV HOME /root
+ENV PYENV_ROOT $HOME/.pyenv
+ENV PATH $PYENV_ROOT/bin:$PATH
+
+RUN eval "$(pyenv init -)"
+RUN eval "$(pyenv virtualenv-init -)"
+
+# python3.6.6のインストールと設定
 RUN pyenv update && pyenv install 3.6.6 && pyenv global 3.6.6
 
 # pipのアップグレード
