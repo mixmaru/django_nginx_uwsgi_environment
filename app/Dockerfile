@@ -2,15 +2,23 @@ FROM ubuntu:18.04
 
 WORKDIR /root
 
+
+# shellをbashに指定
+SHELL ["/bin/bash", "-c"]
+
+
 # 最新状態へ
 RUN apt update
 RUN apt -y upgrade
 
+
 # 必要なコマンドのインストール
 RUN apt -y install build-essential curl git zlib1g-dev libssl-dev libbz2-dev libreadline-dev libsqlite3-dev
 
+
 # nginxのインストール
 RUN apt -y install nginx=1.14.0-0ubuntu1.1
+
 
 # pyenvのインストールと設定
 RUN curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
@@ -22,19 +30,20 @@ ENV HOME /root
 ENV PYENV_ROOT $HOME/.pyenv
 ENV PATH $PYENV_ROOT/bin:$PATH
 
-RUN eval "$(pyenv init -)"
-RUN eval "$(pyenv virtualenv-init -)"
+RUN eval "$(pyenv init -)" &&\
+    eval "$(pyenv virtualenv-init -)" &&\
 
 # python3.6.6のインストールと設定
-RUN pyenv update && pyenv install 3.6.6 && pyenv global 3.6.6
+    pyenv update && pyenv install 3.6.6 && pyenv global 3.6.6 &&\
 
 # pipのアップグレード
-RUN pip install --upgrade pip
+    pip install --upgrade pip &&\
 
 # uWSGIのインストール
-RUN pip install uwsgi
+    pip install uwsgi
 
 EXPOSE 80
+
 
 # nginxの起動(フォアグラウンドで動かさないとすぐ終了してしまう)
 CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
