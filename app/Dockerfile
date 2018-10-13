@@ -30,12 +30,13 @@ RUN pip3 install uwsgi
 #コード転送
 WORKDIR /app
 COPY ./ ./
+RUN chmod 744 startup.sh
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 
 
-# nginxの起動(フォアグラウンドで動かさないとすぐ終了してしまう)
-CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
+CMD ["/app/startup.sh"]
 
 
 # RUN pip install pipenv
