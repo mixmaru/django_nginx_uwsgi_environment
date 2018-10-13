@@ -27,6 +27,10 @@ RUN pip3 install --upgrade pip
 # uWSGIのインストール
 RUN pip3 install uwsgi
 
+#コード転送
+WORKDIR /app
+COPY ./ ./
+
 EXPOSE 80
 
 
