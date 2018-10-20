@@ -34,7 +34,7 @@ COPY ./nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 
-CMD uwsgi --socket :8000 --wsgi-file uwsgi_test.py & nginx -g "daemon off;"
+CMD uwsgi --socket 127.0.0.1:8000 --wsgi-file uwsgi_test.py --master --processes 4 --stats 127.0.0.1:9191 & nginx -g "daemon off;"
 
 
 # RUN pip install pipenv
