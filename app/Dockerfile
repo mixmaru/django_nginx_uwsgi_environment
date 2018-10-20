@@ -30,13 +30,11 @@ RUN pip3 install uwsgi
 #コード転送
 WORKDIR /app
 COPY ./ ./
-RUN chmod 744 startup.sh
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 
-
-CMD ["/app/startup.sh"]
+CMD uwsgi --socket :8000 --wsgi-file uwsgi_test.py & nginx -g "daemon off;"
 
 
 # RUN pip install pipenv
