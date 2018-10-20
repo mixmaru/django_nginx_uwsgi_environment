@@ -2,6 +2,9 @@ FROM ubuntu:18.04
 
 WORKDIR /root
 
+# ロケール設定(pipenv syncでエラーで起こられた為)
+ENV LC_ALL C.UTF-8
+ENV LANG C.UTF-8
 
 # shellをbashに指定
 SHELL ["/bin/bash", "-c"]
@@ -24,30 +27,18 @@ RUN apt -y install nginx=1.14.0-0ubuntu1.1
 RUN apt -y install python3.6 python3-pip
 # pipのアップグレード
 RUN pip3 install --upgrade pip
-# uWSGIのインストール
-RUN pip3 install uwsgi
+# pipenvのインストール
+RUN pip3 install pipenv
 
 #コード転送
 WORKDIR /app
 COPY ./ ./
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
+#ライブラリのインストール(pipenv syncではNGらしい https://github.com/pypa/pipenv/issues/2650)
+RUN pipenv install --deploy --system
+
 EXPOSE 80
 
-CMD uwsgi --socket 127.0.0.1:8000 --wsgi-file uwsgi_test.py --master --processes 4 --stats 127.0.0.1:9191 & nginx -g "daemon off;"
+CMD uwsgi --socket 127.0.0.1:8000 --chdir project/ --wsgi-file project/wsgi.py --master --processes 4 --stats 127.0.0.1:9191 & nginx -g "daemon off;"
 
-
-# RUN pip install pipenv
-# WORKDIR /app
-# EXPOSE 80
-# WORKDIR /docker_build
-# ADD ./Pipfile /docker_build (必要なファイルをhostからコピー配置)
-# ADD ./Pipfile.lock /docker_build (同上)
-#
-# RUN pip install pipenv (pipenvのインストール)
-# RUN pipenv install --system --deploy (Pipfile Pipfile.lockに記載されたライブラリをインストール)
-#
-# WORKDIR /app (作業ディレクトリを指定)
-# EXPOSE 80 (80版ポートを開ける)
-
-# CMD [ "python", "manage.py", "runserver", "0.0.0.0:80" ] (コンテナ起動時に実行するコマンド（djangoのプロジェクトがあれば起動時に開発用webサーバーを起動できる。）)
