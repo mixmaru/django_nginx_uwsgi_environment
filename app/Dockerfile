@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 WORKDIR /root
 
-# ロケール設定(pipenv syncでエラーで起こられた為)
+# ロケール設定(pipenvでPipfile.lockを作るときにエラーで怒られた為)
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 
