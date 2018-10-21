@@ -9,25 +9,19 @@ ENV LANG C.UTF-8
 # shellをbashに指定
 SHELL ["/bin/bash", "-c"]
 
-
 # 最新状態へ
 RUN apt update
 RUN apt -y upgrade
 
-
 # 必要なコマンドのインストール
 RUN apt -y install build-essential curl git zlib1g-dev libssl-dev libbz2-dev libreadline-dev libsqlite3-dev
-
 
 # nginxのインストール
 RUN apt -y install nginx=1.14.0-0ubuntu1.1
 
-
-# pyenvのインストールと設定
+# pythonまわりのインストール
 RUN apt -y install python3.6 python3-pip
-# pipのアップグレード
 RUN pip3 install --upgrade pip
-# pipenvのインストール
 RUN pip3 install pipenv
 
 #コード転送
