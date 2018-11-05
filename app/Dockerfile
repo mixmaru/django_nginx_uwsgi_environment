@@ -34,5 +34,5 @@ RUN pipenv install --deploy --system
 
 EXPOSE 80
 
-CMD uwsgi --socket 127.0.0.1:8000 --chdir project/ --wsgi-file project/wsgi.py --master --processes 4 --stats 127.0.0.1:9191 & nginx -g "daemon off;"
+CMD uwsgi uwsgi.ini & nginx -g "daemon off;"
 
