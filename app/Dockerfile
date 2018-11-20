@@ -26,11 +26,14 @@ RUN pip3 install pipenv
 
 #コード転送
 WORKDIR /app
-COPY ./ ./
+COPY ./Pipfile ./Pipfile
+COPY ./Pipfile.lock ./Pipfile.lock
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
 #ライブラリのインストール(pipenv syncではNGらしい https://github.com/pypa/pipenv/issues/2650)
 RUN pipenv install --deploy --system
+
+WORKDIR /app/project
 
 EXPOSE 80
 
