@@ -5,12 +5,27 @@ Nginx -> uWSGI -> Django で動作するDjangoプロジェクトの初期状態�
 ```
 $ cd your_work_dir
 $ git clone https://github.com/mixmaru/django_nginx_uwsgi_environment.git
-$ cd django_nginx_uwsgi_environment/app
-$ docker build -t django_env .
-$ docker run -d -p 80:80 -v /abstract_path_to_django_nginx_uwsgi_environment/app/logs:/var/log/nginx django_init
+$ cd django_nginx_uwsgi_environment
+$ docker-compose up
 ```
 
 ブラウザでlocalhostにアクセスすると、Djangoの初期画面が表示される。
 
-## 今後予定
-docker-composeを使ってpostgreSQLでデータベースも含めた環境構築を設定する予定
+# DB
+postgreSQL
+
+user_name: foo  
+password: foobar  
+db_name: baz  
+
+localhost:5432でアクセス可能。
+
+# DjangoによるDB初期化
+
+docker exec -it (appのコンテナ名) /bin/bash
+でappサーバー内に入って、
+
+```
+$ cd project/
+$ python3 ./manage.py migrate
+```
