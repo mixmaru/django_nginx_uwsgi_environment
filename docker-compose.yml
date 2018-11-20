@@ -5,7 +5,7 @@ services:
         build: ./app/
         volumes:
             - ./app/logs:/var/log/nginx
-            - ./app/project:/app/project
+            - ./app/sync:/app/sync
         ports:
             - "80:80"
         depends_on:

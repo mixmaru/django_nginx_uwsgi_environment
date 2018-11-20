@@ -29,11 +29,10 @@ WORKDIR /app
 COPY ./Pipfile ./Pipfile
 COPY ./Pipfile.lock ./Pipfile.lock
 COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY ./uwsgi.ini ./uwsgi.ini
 
 #ライブラリのインストール(pipenv syncではNGらしい https://github.com/pypa/pipenv/issues/2650)
 RUN pipenv install --deploy --system
-
-WORKDIR /app/project
 
 EXPOSE 80
 
