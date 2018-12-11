@@ -17,7 +17,7 @@ RUN apt -y upgrade
 RUN apt -y install build-essential curl git zlib1g-dev libssl-dev libbz2-dev libreadline-dev libsqlite3-dev
 
 # nginxのインストール
-RUN apt -y install nginx=1.14.0-0ubuntu1.1
+RUN apt -y install nginx
 
 # pythonまわりのインストール
 RUN apt -y install python3.6 python3-pip
