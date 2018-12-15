@@ -14,15 +14,22 @@ RUN apt update
 RUN apt -y upgrade
 
 # 必要なコマンドのインストール
-RUN apt -y install build-essential curl git zlib1g-dev libssl-dev libbz2-dev libreadline-dev libsqlite3-dev
+RUN apt -y install build-essential curl git zlib1g-dev libssl-dev libbz2-dev libreadline-dev libsqlite3-dev wget
 
 # nginxのインストール
 RUN apt -y install nginx
 
 # pythonまわりのインストール
-RUN apt -y install python3.6 python3-pip
+RUN wget https://www.python.org/ftp/python/3.6.6/Python-3.6.6.tgz && \
+tar -zxvf Python-3.6.6.tgz && \
+cd ./Python-3.6.6 && \
+./configure && \
+make && \
+make install
+
 RUN pip3 install --upgrade pip
 RUN pip3 install pipenv
+
 
 #コード転送
 WORKDIR /app
